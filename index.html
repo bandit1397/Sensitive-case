@@ -10,7 +10,7 @@
     button { display: block; margin: 0.5rem 0; padding: 0.5rem 1rem; cursor: pointer; }
     .sub-content { margin-left: 1rem; margin-top: 0.5rem; background: #eef; padding: 0.5rem; border-radius: 4px; }
     .detail-list { margin-left: 1rem; list-style: disc; padding-left: 1rem; }
-    .sub-detail-list { margin-left: 1rem; list-style: decimal; padding-left: 1rem; }
+    .sub-detail-list { margin-left: 1rem; list-style: none; padding-left: 1rem; }
     .highlight { color: blue; font-weight: bold; }
   </style>
 </head>
@@ -343,7 +343,19 @@ function createSubContent(사건, 항목) {
       subUl.className = 'sub-detail-list';
       세부.sub.forEach(sub => {
         const subLi = document.createElement('li');
-        subLi.innerHTML = 색상변환(sub);
+        if (typeof sub === 'object' && sub.text) {
+          subLi.innerHTML = 색상변환(sub.text);
+          const nestedUl = document.createElement('ul');
+          nestedUl.style.listStyle = 'circle'; // 서브의 서브는 ● 표시
+          sub.sub.forEach(nested => {
+            const nestedLi = document.createElement('li');
+            nestedLi.innerHTML = 색상변환(nested);
+            nestedUl.appendChild(nestedLi);
+          });
+          subLi.appendChild(nestedUl);
+        } else {
+          subLi.innerHTML = 색상변환(sub);
+        }
         subUl.appendChild(subLi);
       });
       li.appendChild(subUl);
@@ -393,6 +405,7 @@ document.querySelectorAll('#필수서류버튼영역 button').forEach(btn => {
 
 </body>
 </html>
+
 
 
 
