@@ -5,14 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>민감사건 체크리스트 완전판</title>
   <style>
-    body { font-family: sans-serif; padding: 1rem; background-color: #f7f7f7; }
-    .section { margin-bottom: 2rem; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    button { display: block; margin: 0.5rem 0; padding: 0.5rem 1rem; cursor: pointer; }
-    .sub-content { margin-top: 0.5rem; background: #eef; padding: 0.5rem; border-radius: 4px; }
-    ul { padding-left: 1rem; margin: 0.25rem 0; }
-    li { margin: 0.25rem 0; }
-    .highlight { color: blue; font-weight: bold; }
-  </style>
+  body { font-family: sans-serif; padding: 1rem; background-color: #f7f7f7; }
+.section { margin-bottom: 2rem; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+button { display: block; margin: 0.5rem 0; padding: 0.5rem 1rem; cursor: pointer; }
+.sub-content { margin-left: 1rem; margin-top: 0.5rem; background: #eef; padding: 0.5rem; border-radius: 4px; }
+
+ul, li {
+  list-style-type: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+li::before {
+  content: none !important;
+}
+
+li::marker {
+  content: none !important;
+}
+
+.highlight { color: blue; font-weight: bold; }
+</style>
 </head>
 <body>
 
@@ -49,30 +62,30 @@ function 색상변환(text) {
 const 세부내용Depth = {
   "아동학대": {
     "현장출동": [
-      { text: "분리 및 조사", depth: 0 },
-      { text: "|유의 사항|", depth: 0 },
+      { text: "□ 분리 및 조사", depth: 0 },
+      { text: "□ |유의 사항|", depth: 0 },
       { text: "|18세 미만| '||아동||' 여부(|||고3 학생 일부 해당 안됨|||)", depth: 1 },
       { text: "'아동학대'란 ||보호자|| |||및||| ||성인||에 의한 학대", depth: 1 },
-      { text: "||통합판단조사표 작성|| |||및||| ||아동학대조사표 작성||", depth: 0 }
+      { text: "□ ||통합판단조사표 작성|| |||및||| ||아동학대조사표 작성||", depth: 0 }
     ],
     "응급조치(||경찰||)": [
-      { text: "보호자에 의한 아동학대 여부 검토", depth: 0 },
+      { text: "□ 보호자에 의한 아동학대 여부 검토", depth: 0 },
       { text: "|보호자 아닌 ||기타 성인||에 의한 학대인 경우| ||응급조치 및 긴급임시조치|| 등 |해당사항 없음|", depth: 1 },
-      { text: "아동학대범죄 ||현장||을 발견한 경우 또는 |||학대현장 이외의 장소|||에서 학대피해가 확인되고 재학대의 위험이 급박ㆍ현저한 경우", depth: 0 },
+      { text: "□ 아동학대범죄 ||현장||을 발견한 경우 또는 |||학대현장 이외의 장소|||에서 학대피해가 확인되고 재학대의 위험이 급박ㆍ현저한 경우", depth: 0 },
       { text: "아동학대범죄 행위의 제지", depth: 1 },
       { text: "아동학대행위자를 피해아동으로부터 격리", depth: 1 },
       { text: "피해아동을 아동학대 관련 보호시설로 인도", depth: 1 },
       { text: "긴급치료가 필요한 피해아동을 의료기관으로 인도", depth: 1 },
-      { text: "응급조치결과 보고서 작성", depth: 0 }
+      { text: "□ 응급조치결과 보고서 작성", depth: 0 }
     ],
      "긴급임시조치(||경찰||)": [
-      { text: "경찰직권(응급조치에도 불구 아동학대범죄 재발 우려가 있고 긴급을 요할때) or 피해아동 등의 신청에 따라 실시", depth: 0 },
+      { text: "□ 경찰직권(응급조치에도 불구 아동학대범죄 재발 우려가 있고 긴급을 요할때) or 피해아동 등의 신청에 따라 실시", depth: 0 },
       { text: "피해아동 또는 가정구성원의 주거로부터 퇴거 등 격리|", depth: 1 },
       { text: "피해아동 또는 가정구성원의 주거, 학교 또는 보호시설 등에서 100미터 이내의 접근 금지", depth: 1 },
       { text: "피해아동을 아동학대 관련 보호시설로 인도", depth: 1 },
       { text: "피해아동 또는 가정구성원에 대한 전기통신을 이용한 접근 금지", depth: 1 },
-      { text: "||긴급임시조치결정서 작성||(|사법경찰관|)", depth: 0 },
-      { text: "긴급임시조치 |위반시|", depth: 0 },
+      { text: "□ ||긴급임시조치결정서 작성||(|사법경찰관|)", depth: 0 },
+      { text: "□ 긴급임시조치 |위반시|", depth: 0 },
       { text: "500만원 이하 ||과태료||", depth: 1 },
       { text: "아동학대범죄의 처벌 등에 관한 특례법 제63조 제1항 제3호", depth: 1 },
       { text: "||위반사실 ? 통보||(|||긴급임시조치위반자 통보서|||)", depth: 1 }
@@ -84,7 +97,7 @@ const 세부내용Depth = {
       { text: "사법경찰관의 임시조치 청구의 신청 or 검사 직권", depth: 0 },
     ],
     "임시조치 결장(||법원||)": [
-      { text: "판사 결정으로 다음 조치", depth: 0 },
+      { text: "□ 판사 결정으로 다음 조치", depth: 0 },
       { text: "퇴거 등 격리", depth: 1 },
       { text: "접근 금지", depth: 1 },
       { text: "통신 금지", depth: 1 },
@@ -92,7 +105,7 @@ const 세부내용Depth = {
       { text: "아동보호전문기관 등에의 상담 및 교육 위탁", depth: 1 },
       { text: "의료기관이나 그 밖의 요양시설에의 위탁", depth: 1 },
       { text: "경찰관서의 유치장 또는 구치소에의 유치", depth: 1 },
-      { text: "임시조치 |위반시|", depth: 0 },
+      { text: "□ 임시조치 |위반시|", depth: 0 },
       { text: "2년 이하의 ||징역|| 또는 2천만원 이하의 ||벌금||", depth: 1 },
       { text: "아동학대범죄의 처벌 등에 관한 특례법 제59조 제1항 제1호", depth: 1 },   
     ],
@@ -111,39 +124,39 @@ const 세부내용Depth = {
   },
   "가정폭력": {
     "현장출동": [
-      { text: "가해자와 피해자 분리", depth: 0 },
-      { text: "진술 및 증거 확보", depth: 0 },
-      { text: "|가족 구성원 여부| 확인", depth: 0 },
+      { text: "□ 가해자와 피해자 분리", depth: 0 },
+      { text: "□ 진술 및 증거 확보", depth: 0 },
+      { text: "□ |가족 구성원 여부| 확인", depth: 0 },
       { text: "배우자(사실상 혼인관계에 있는 사람을 포함한다. 이하 같다) 또는 배우자였던 사람", depth: 1 },
       { text: "자기 또는 배우자와 직계존비속관계(사실상의 양친자관계를 포함한다. 이하 같다)에 있거나 있었던 사람", depth: 1 },
       { text: "계부모와 자녀의 관계 또는 적모(적모)와 서자(서자)의 관계에 있거나 있었던 사람", depth: 1 },
       { text: "|동거|하는 ||친족||", depth: 1 },
-      { text: "||긴급임시 긴급응급조치 통합판단조사표 작성(||PDA|| or ||서면||)|| 및 ||가정폭력 피해자 권리 및 지원 안내서||", depth: 0 },
-      { text: "(법률혼 관계 아닌 경우) 사실혼 판단 체크리스트(서면)", depth: 0 }
+      { text: "□ 긴급임시 긴급응급조치 ||통합판단조사표 작성||(|||PDA||| or |||서면|||) 및 ||가정폭력 피해자 권리 및 지원 안내서||", depth: 0 },
+      { text: "□ (법률혼 관계 아닌 경우) 사실혼 판단 체크리스트(서면)", depth: 0 }
     ],
     "응급조치(||경찰||)": [
-      { text: "응급조치 실시", depth: 0 },
+      { text: "□ 응급조치 실시", depth: 0 },
       { text: "폭력행위의 제지, 가정폭력행위자ㆍ피해자의 분리 및 범죄수사", depth: 1 },
       { text: "현행범인 체포 등 수사", depth: 1 },
       { text: "피해자를 가정폭력 관련 상담소 또는 보호시설로 인도(피해자가 동의한 경우만 해당한다)", depth: 1 },
       { text: "긴급치료가 필요한 피해자를 의료기관으로 인도", depth: 1 },
       { text: "폭력행위 재발 시 임시조치 신청 가능 통보", depth: 1 },
       { text: "피해자보호명령 또는 신변안전조치 청구 가능 고지", depth: 1 },
-      { text: "||응급조치 보고서 작성||(|||kics|||)", depth: 0 }
+      { text: "□ ||응급조치 보고서 작성||(|||kics|||)", depth: 0 }
     ],
     "긴급임시조치(||경찰||)": [
-      { text: "직권 또는 피해자/대리인 신청", depth: 0 },
+      { text: "□ 직권 또는 피해자/대리인 신청", depth: 0 },
       { text: "피해자 또는 가정구성원의 주거 또는 점유하는 방실(방실)로부터의 퇴거 등 격리", depth: 1 },
       { text: "피해자 또는 가정구성원이나 그 주거, 직장 등에서 100미터 이내의 접근 금지", depth: 1 },
       { text: "피해자 또는 가정구성원에 대한 「전기통신기본법」 제2조제1호의 전기통신을 이용한 접근 금지", depth: 1 },
 
-      { text: "||긴급임시조치결정서 작성||(|사법경찰관|)(|||kics|||)", depth: 0 },
+      { text: "□ ||긴급임시조치결정서 작성||(|사법경찰관|)(|||kics|||)", depth: 0 },
       { text: "긴급임시조치 ||통보서||(|||가정폭력행위자 에게 교부|||)", depth: 1 },
       { text: "긴급임시조치 ||확인서||(|||가정폭력행위자 확인 서명, 수사서류에 첨부|||)", depth: 1 },
       { text: "긴급임시조치 확인서 및 통보서는 한장으로 되어 있음(절취하여 통보서 가해자에게 교부", depth: 2 },
       { text: "확인서 날인거부시 수사보고 첨부", depth: 2 },
 
-      { text: "긴급임시조치 |위반시|", depth: 0 },
+      { text: "□ 긴급임시조치 |위반시|", depth: 0 },
       { text: "300만원 이하 ||과태료||", depth: 1 },
       { text: "가정폭력범죄의 처벌 등에 관한 특례법 제66조 제2호", depth: 1 },
       { text: "||위반사실 관할법원에 통보||(|||긴급임시조치위반자 통보서|||)", depth: 1 },
@@ -157,14 +170,14 @@ const 세부내용Depth = {
     ],
 
     "임시조치 결정(||법원||)": [
-      { text: "결정 내용", depth: 0 },
+      { text: "□ 결정 내용", depth: 0 },
       { text: "퇴거 등 격리", depth: 1 },
       { text: "100m 접근 금지", depth: 1 },
       { text: "전기통신 접근 금지", depth: 1 },
       { text: "의료기관 위탁", depth: 1 },
       { text: "유치장 또는 구치소 유치", depth: 1 },
-      { text: "위반시", depth: 0 },
-      { text: "1년 이하 ||징역|| 또는 1천만원 이하 ||벌금||: 0", depth: 1 },
+      { text: "□ 위반시", depth: 0 },
+      { text: "1년 이하 ||징역|| 또는 1천만원 이하 ||벌금||", depth: 1 },
       { text: "가정폭력범죄의 처벌 등에 관한 특례법 제63조 제2항", depth: 1 }
     ],
 
@@ -185,25 +198,25 @@ const 세부내용Depth = {
   },
   "스토킹": {
     "현장출동": [
-      { text: "가해자 경고 및 분리", depth: 0 },
-      { text: "스토킹 여부 판단", depth: 0 },
-      { text: "증거 확보", depth: 0 },
-      { text: "||통합판단조사표 작성|| 및 ||피해자권리고지 안내서||(|||pda 전송||| or |||서면 교부|||)", depth: 0 }
+      { text: "□ 가해자 경고 및 분리", depth: 0 },
+      { text: "□ 스토킹 여부 판단", depth: 0 },
+      { text: "□ 증거 확보", depth: 0 },
+      { text: "□ ||통합판단조사표 작성|| 및 ||피해자권리고지 안내서||(|||pda 전송||| or |||서면 교부|||)", depth: 0 }
     ],
      "응급조치(||경찰||)": [
-      { text: "진행 중인 스토킹행위에 대하여 다음 각 호의 조치를 하여야 한다", depth: 0 },
+      { text: "□ 진행 중인 스토킹행위에 대하여 다음 각 호의 조치를 하여야 한다", depth: 0 },
       { text: "스토킹행위의 제지, 향후 스토킹행위의 중단 통보 및 스토킹행위를 지속적 또는 반복적으로 할 경우 |서면경고(경고장)|", depth: 1 },
       { text: "스토킹행위자와 피해자등의 분리 및 범죄수사", depth: 1 },
       { text: "피해자등에 대한 긴급응급조치 및 잠정조치 요청의 절차 등 안내", depth: 1 },
       { text: "스토킹 피해 관련 상담소 또는 보호시설로의 피해자등 인도(||피해자등이 동의한 경우||만 해당한다)", depth: 1 },
-      { text: "||응급조치 보고서 작성||", depth: 0 },  
+      { text: "□ ||응급조치 보고서 작성||", depth: 0 },  
     ],
     "긴급응급조치(||경찰||)": [
-      { text: "스토킹행위가 지속적 또는 반복적으로 행하여질 우려가 있고 스토킹범죄의 예방을 위하여 긴급을 요하는 경우<br> 스토킹행위자에게 ||직권||으로 또는 스토킹행위의 상대방이나 그 법정대리인 또는 스토킹행위를 신고한 사람의 ||요청||에 의하여", depth: 0 },
+      { text: "□ 스토킹행위가 지속적 또는 반복적으로 행하여질 우려가 있고 스토킹범죄의 예방을 위하여 긴급을 요하는 경우<br> 스토킹행위자에게 ||직권||으로 또는 스토킹행위의 상대방이나 그 법정대리인 또는 스토킹행위를 신고한 사람의 ||요청||에 의하여", depth: 0 },
       { text: "스토킹행위의상대방등이나 그 주거등으로부터 100미터 이내의 접근 금지", depth: 1 },
       { text: "스토킹행위의상대방등에 대한 「전기통신기본법」 제2조제1호의 전기통신을 이용한 접근 금지", depth: 1 },
 
-      { text: "||긴급응급조치결정서 작성||(|사법경찰관|)", depth: 0 },
+      { text: "□ ||긴급응급조치결정서 작성||(|사법경찰관|)", depth: 0 },
       { text: "||긴급응급조치 고지서||(긴급응급조치 |대상자에게 배부|)", depth: 1 },
       { text: "||확인서||(수사서류 첨부, 날인거부시 수사보고)", depth: 1 },
       { text: "긴급응급조치의 내용 및 불복 방법 등 고지", depth: 2 },
@@ -211,7 +224,7 @@ const 세부내용Depth = {
       { text: "||긴급응급조치 통지||(스토킹행위의 상대방등에게 결정서 사본 교부, |행위자의 주민등록번호등 민감한 개인정보는비식별처리|)", depth: 1 },
       { text: "참고) 가정폭력 및 아동복지법의 경우 긴급임시조치를 한 경우에 피해자에게 긴급임시조치결정서 사본을 교부하지 않는 것에서 차이있음", depth: 2 },
 
-      { text: "긴급응급조치 |위반시|", depth: 0 },
+      { text: "□ 긴급응급조치 |위반시|", depth: 0 },
       { text: "1년 이하의 ||징역|| 또는 1천만원 이하의 ||벌금||, 스토킹범죄의 처벌 등에 관한 법률 제20조 제3항", depth: 1 },
     ],
      "잠정조치 신청(||경찰||)": [
@@ -221,14 +234,14 @@ const 세부내용Depth = {
       { text: "검사 직권 또는 사법경찰관의 신청에 따라", depth: 0 },
     ],
      "잠정조치 결정(||법원||)": [
-      { text: "피해자 보호를 위하여 필요하다고 인정하는 경우에는 결정으로", depth: 0 },
+      { text: "□ 피해자 보호를 위하여 필요하다고 인정하는 경우에는 결정으로", depth: 0 },
       { text: "피해자에 대한 스토킹범죄 중단에 관한 서면 경고", depth: 1 },
       { text: "피해자 또는 그의 동거인, 가족이나 그 주거등으로부터 100미터 이내의 접근 금지", depth: 1 },
       { text: "피해자 또는 그의 동거인, 가족에 대한 「전기통신기본법」 제2조제1호의 전기통신을 이용한 접근 금지", depth: 1 },
       { text: "전자장치의 부착", depth: 1 },
       { text: "국가경찰관서의 유치장 또는 구치소에의 유치", depth: 1 },
 
-      { text: "잠정조치 |위반시|", depth: 0 },
+      { text: "□ 잠정조치 |위반시|", depth: 0 },
       { text: "3년 이하의 ||징역|| 또는 3천만원 이하의 ||벌금||, 스토킹범죄의 처벌 등에 관한 법률 제20조 제1항 제1호(전자장치 효용을 해치는 행위를 한 사람)", depth: 1 },
       { text: "2년 이하의 ||징역|| 또는 2천만원 이하의 ||벌금||, 스토킹범죄의 처벌 등에 관한 법률 제20조 제2항(주거 등 접근 금지 및 통신 이용 접근 금지 위반)", depth: 1 },
     ],
@@ -276,11 +289,13 @@ function createSubContentDepth(사건, 항목) {
 
   const 항목내용 = 세부내용Depth[사건]?.[항목] || [];
   항목내용.forEach(item => {
-    const li = document.createElement('li');
-    li.style.marginLeft = `${item.depth * 20}px`; 
-    li.innerHTML = item.text.includes("작성") ? `<span class="highlight">${색상변환(item.text)}</span>` : 색상변환(item.text);
-    ul.appendChild(li);
-  });
+  const li = document.createElement('li');
+  li.style.paddingLeft = `${item.depth * 20}px`; // depth에 따라 들여쓰기
+  li.innerHTML = item.text.includes("작성") 
+    ? `<span class="highlight">${색상변환(item.text)}</span>` 
+    : 색상변환(item.text);
+  ul.appendChild(li);
+});
 
   내용Div.appendChild(ul);
   return 내용Div;
