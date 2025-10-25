@@ -476,21 +476,36 @@ function createSubContentDepth(사건, 항목) {
 
     // Special: '사실혼 판단 체크리스트'가 포함된 항목이면 클릭 가능한 링크로 변환
     // (또는 '사실혼' 키워드 포함 시에도 동작)
-    if (/사실혼\s*판단\s*체크리스트|사실혼/.test(item.text)) {
-      // 클릭 가능한 엘리먼트 생성
+    if (/사실혼\s*판단\s*체크리스트|사실혼|경고장|피해자권리고지안내서|통합판단조사표/.test(item.text)) {
       const a = document.createElement('a');
       a.href = "javascript:void(0)";
       a.innerHTML = rawHtml;
       a.style.textDecoration = 'underline';
       a.style.cursor = 'pointer';
+
       a.addEventListener('click', async (e) => {
-        // 키는 우리가 찾을 맵 키(문서키). 표준화: "사실혼_판단_체크리스트"
-        const docKey = "사실혼_판단_체크리스트";
-        await openDocumentModal(docKey, "사실혼 판단 체크리스트");
+        let docKey = "";
+        let title = "";
+
+        if (/사실혼/.test(item.text)) {
+          docKey = "사실혼_판단_체크리스트";
+          title = "사실혼 판단 체크리스트";
+        } else if (/경고장/.test(item.text)) {
+          docKey = "경고장";
+          title = "경고장";
+        } else if (/피해자권리고지안내서/.test(item.text)) {
+          docKey = "피해자권리고지안내서";
+          title = "피해자 권리 고지 안내서";
+        } else if (/통합판단조사표/.test(item.text)) {
+          docKey = "통합판단조사표";
+          title = "통합 판단 조사표";
+        }
+
+        if (docKey) await openDocumentModal(docKey, title);
       });
+
       li.appendChild(a);
     } else {
-      // 일반 텍스트
       li.innerHTML = rawHtml;
     }
 
@@ -610,5 +625,6 @@ loadDocumentsJson();
 
 </body>
 </html>
+
 
 
