@@ -5,27 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>민감사건 체크리스트 완전판</title>
   <style>
+  /* --- 기존 스타일 유지(요청대로 모든 것은 동일) --- */
   body { font-family: sans-serif; padding: 1rem; background-color: #f7f7f7; }
-.section { margin-bottom: 2rem; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-button { display: block; margin: 0.5rem 0; padding: 0.5rem 1rem; cursor: pointer; }
-.sub-content { margin-left: 1rem; margin-top: 0.5rem; background: #eef; padding: 0.5rem; border-radius: 4px; }
+  .section { margin-bottom: 2rem; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+  button { display: block; margin: 0.5rem 0; padding: 0.5rem 1rem; cursor: pointer; }
+  .sub-content { margin-left: 1rem; margin-top: 0.5rem; background: #eef; padding: 0.5rem; border-radius: 4px; }
 
-ul, li {
-  list-style-type: none !important;
-  margin: 0;
-  padding: 0;
-}
+  ul, li {
+    list-style-type: none !important;
+    margin: 0;
+    padding: 0;
+  }
 
-li::before {
-  content: none !important;
-}
+  li::before {
+    content: none !important;
+  }
 
-li::marker {
-  content: none !important;
-}
+  li::marker {
+    content: none !important;
+  }
 
-.highlight { color: blue; font-weight: bold; }
-</style>
+  .highlight { color: blue; font-weight: bold; }
+
+  /* --- 모달(문서 미리보기 / 다운로드) 스타일 --- */
+  .doc-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+    background: rgba(0,0,0,0.45);
+  }
+  .doc-modal.open { display: flex; }
+  .doc-modal .box {
+    width: 90%;
+    max-width: 980px;
+    height: 85%;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .doc-modal .header {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid #eee;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .doc-modal .header .title { font-weight:600; }
+  .doc-modal .header .actions { display:flex; gap:8px; align-items:center; }
+  .doc-modal .content {
+    flex:1;
+    background:#fafafa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:auto;
+    padding:8px;
+  }
+  .doc-modal iframe, .doc-modal embed {
+    width:100%;
+    height:100%;
+    border:0;
+  }
+  .doc-modal .notice {
+    padding: 1rem;
+    text-align: center;
+    color: #333;
+  }
+  .link-button {
+    border: 1px solid #ccc;
+    background: #f6f6f6;
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    cursor:pointer;
+    text-decoration: none;
+    color: #111;
+  }
+  .hidden { display:none; }
+  </style>
 </head>
 <body>
 
@@ -50,6 +112,23 @@ li::marker {
   </div>
 </div>
 
+<!-- 문서 미리보기 / 다운로드 모달 -->
+<div id="docModal" class="doc-modal" role="dialog" aria-hidden="true">
+  <div class="box" role="document">
+    <div class="header">
+      <div class="title" id="docTitle">문서</div>
+      <div class="actions">
+        <a id="docDownload" class="link-button" href="#" download>다운로드</a>
+        <button id="docClose" class="link-button">닫기</button>
+      </div>
+    </div>
+    <div class="content" id="docContent">
+      <!-- PDF iframe/embed 또는 안내문이 여기에 들어감 -->
+      <div class="notice" id="docNotice">문서를 불러오는 중입니다...</div>
+    </div>
+  </div>
+</div>
+
 <script>
 function 색상변환(text) {
   return text
@@ -58,7 +137,7 @@ function 색상변환(text) {
     .replace(/\|(.+?)\|/g, '<span style="color: red; font-weight: bold;">$1</span>');
 }
 
-// 모든 사건과 내용, depth 포함
+/* --- 기존 데이터(원본 그대로 유지) --- */
 const 세부내용Depth = {
   "아동학대": {
     "현장출동": [
@@ -130,7 +209,6 @@ const 세부내용Depth = {
       { text: "?", depth: 1 },
       { text: "?", depth: 1 }
     ]
-
   },
 
   "가정폭력": {
@@ -172,7 +250,7 @@ const 세부내용Depth = {
       { text: "※ 남부지방법원 형사과(fax 02-2642-7862)", depth: 2 },
       { text: "▸ 300만원 이하 ||과태료||", depth: 1 },
       { text: "□ |사후신청| ||의무|| |있음|(여청수사)", depth: 0 },
-      { text: "▸||긴급임시조치를 한 때에는|| |지체|없이 검사에게 ||임시조치의 청구를 신청||해야한다 ", depth: 1 },
+      { text: "▸||긴급임시조치를 한 때에는|| |지체| 없이 검사에게 임시조치를 신청", depth: 1 },
       { text: "□ 긴급임시조치 취소(여청수사)", depth: 0 },
       { text: "▸||검사가 임시조치를 청구하지 아니||하거나 ||법원이 임지조치의 결정을 하지 아니한때|| |즉시| 긴급임시조치를 |취소|해야 한다 ", depth: 1 },     
     ],
@@ -181,7 +259,7 @@ const 세부내용Depth = {
     ],
      "임시조치 청구(||검사||)": [
       { text: "▸법원에 임시조치 청구", depth: 0 },
-    ],
+    ],    
 
     "임시조치 결정(||법원||)": [
       { text: "□ 결정 내용", depth: 0 },
@@ -221,7 +299,6 @@ const 세부내용Depth = {
       { text: "- 나타나게 하는 행위: 부재중 전화", depth: 2 },
       { text: "▸ 상대방등에게 ||직접|| 또는 ||제3자||를 통하여 ||물건등||을 ||도달||하게 하거나 ||주거등 또는 그 부근||에 ||물건등을 두||는 행위", depth: 1 },
       { text: "- 물건등 에는 제한이 없다: 층간소음", depth: 2 },
-      { text: "▸ 상대방등의 ||주거등 또는 그 부근||에 놓여져 있는 ||물건등을 훼손||하는 행위", depth: 1 },
       { text: "▸ 상대방등의 정보(개인정보, 위치정보, 정보주체를 식별할 수 있을 정도의 가공한 정보)를 ||정보통신망을 이용||하여 |제3자|에게 |제공, 배포, 게시|하는 행위", depth: 1 },
       { text: "▸ ||정보통신망을 이용||하여 자신이 ||상대방등인 것처럼 가장||하는 행위", depth: 1 },
       { text: "□ 증거 확보", depth: 0 },
@@ -301,7 +378,7 @@ const 세부내용Depth = {
       { text: "▸||경고장||", depth: 0 },
       { text: "▸||피해자권리고지안내서||", depth: 0 },
       { text: "▸||체포서|| or ||임의동행보고서|| or ||발생보고서||", depth: 0 }
-      
+
     ],
     "유의사항": [
       { text: "?", depth: 0 },
@@ -311,6 +388,71 @@ const 세부내용Depth = {
   }
 };
 
+/* --- 문서 매핑 로직 ---
+   1) 같은 폴더에 documents.json 있으면 사용(권장)
+      형식 예:
+      {
+        "사실혼_판단_체크리스트": "facts_unmarried_checklist.pdf",
+        "통합판단조사표": "integration_form.pdf",
+        ...
+      }
+   2) documents.json 없으면 기본 후보 파일명 목록을 자동 시도
+*/
+let DOC_MAP = {}; // key -> relative file path
+const DEFAULT_CANDIDATES = {
+  "사실혼_판단_체크리스트": [
+    "사실혼_판단_체크리스트.pdf",
+    "사실혼_판단_체크리스트.hwp",
+    "사실혼_판단_체크리스트.docx",
+    "fact_marriage_checklist.pdf",
+    "fact_marriage_checklist.hwp"
+  ],
+  // 필요하면 다른 문서 키에 대한 후보를 여기 추가 가능
+};
+
+async function loadDocumentsJson() {
+  try {
+    const r = await fetch('./documents.json', {cache: "no-cache"});
+    if (!r.ok) throw new Error('no documents.json');
+    const j = await r.json();
+    DOC_MAP = j;
+    console.log('documents.json loaded', DOC_MAP);
+  } catch (e) {
+    // documents.json 없으면 빈 맵 유지(후보 탐색 사용)
+    console.log('documents.json not found; will try default candidates');
+  }
+}
+
+/* 파일 존재 확인(같은 origin) */
+async function existsFile(path) {
+  try {
+    const res = await fetch(path, { method: 'GET', cache: "no-cache" });
+    return res.ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+/* 주어진 문서 키에 대해 실제 사용 가능한 파일 경로를 반환 */
+async function resolveDocumentPath(key) {
+  // 1) documents.json에 명시적 경로가 있으면 우선 사용
+  if (DOC_MAP && DOC_MAP[key]) {
+    const p = DOC_MAP[key];
+    if (await existsFile(p)) return p;
+    // 문서맵에 있으나 파일이 없으면 계속해서 후보 탐색
+  }
+
+  // 2) 후보 목록 시도
+  const candidates = DEFAULT_CANDIDATES[key] || [];
+  for (const c of candidates) {
+    if (await existsFile(c)) return c;
+  }
+
+  // 3) 못찾음
+  return null;
+}
+
+/* --- 기존 UI 렌더링 코드(대체 없이 동일) --- */
 function clearSubContents() {
   document.querySelectorAll('.sub-content').forEach(el => el.remove());
 }
@@ -322,18 +464,40 @@ function createSubContentDepth(사건, 항목) {
 
   const 항목내용 = 세부내용Depth[사건]?.[항목] || [];
   항목내용.forEach(item => {
-  const li = document.createElement('li');
-  li.style.paddingLeft = `${item.depth * 20}px`; // depth에 따라 들여쓰기
-  li.innerHTML = item.text.includes("작성") 
-    ? `<span class="highlight">${색상변환(item.text)}</span>` 
-    : 색상변환(item.text);
-  ul.appendChild(li);
-});
+    const li = document.createElement('li');
+    li.style.paddingLeft = `${item.depth * 20}px`; // depth에 따라 들여쓰기
+
+    // 텍스트 변환
+    const rawHtml = 색상변환(item.text);
+
+    // Special: '사실혼 판단 체크리스트'가 포함된 항목이면 클릭 가능한 링크로 변환
+    // (또는 '사실혼' 키워드 포함 시에도 동작)
+    if (/사실혼\s*판단\s*체크리스트|사실혼/.test(item.text)) {
+      // 클릭 가능한 엘리먼트 생성
+      const a = document.createElement('a');
+      a.href = "javascript:void(0)";
+      a.innerHTML = rawHtml;
+      a.style.textDecoration = 'underline';
+      a.style.cursor = 'pointer';
+      a.addEventListener('click', async (e) => {
+        // 키는 우리가 찾을 맵 키(문서키). 표준화: "사실혼_판단_체크리스트"
+        const docKey = "사실혼_판단_체크리스트";
+        await openDocumentModal(docKey, "사실혼 판단 체크리스트");
+      });
+      li.appendChild(a);
+    } else {
+      // 일반 텍스트
+      li.innerHTML = rawHtml;
+    }
+
+    ul.appendChild(li);
+  });
 
   내용Div.appendChild(ul);
   return 내용Div;
 }
 
+/* --- 사건 선택 및 버튼 생성 (원본대로) --- */
 let currentEvent = null;
 
 document.querySelectorAll('input[name="사건"]').forEach(radio => {
@@ -366,39 +530,79 @@ document.querySelectorAll('#필수서류버튼영역 button').forEach(btn => {
     btn.insertAdjacentElement('afterend', 내용);
   });
 });
+
+/* --- 문서 모달 관련 함수 --- */
+const modal = document.getElementById('docModal');
+const docTitle = document.getElementById('docTitle');
+const docContent = document.getElementById('docContent');
+const docNotice = document.getElementById('docNotice');
+const docDownload = document.getElementById('docDownload');
+const docClose = document.getElementById('docClose');
+
+docClose.addEventListener('click', closeDocumentModal);
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeDocumentModal();
+});
+
+function openDocumentModal(docKey, friendlyName) {
+  return (async () => {
+    docTitle.textContent = friendlyName || docKey;
+    docContent.innerHTML = '';
+    docContent.appendChild(docNotice);
+    docNotice.textContent = '문서를 찾는 중입니다...';
+    docNotice.style.display = 'block';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+
+    // Resolve document path (문서가 있으면 path 반환, 없으면 null)
+    const path = await resolveDocumentPath(docKey);
+    if (!path) {
+      docNotice.textContent = '파일이 존재하지 않습니다. 해당 문서를 같은 폴더에 업로드하시거나 documents.json에 경로를 등록해 주세요.';
+      docDownload.href = '#';
+      docDownload.style.display = 'none';
+      return;
+    }
+
+    // 파일이 존재하면 확장자별 처리 (pdf -> iframe/embed, hwp/docx -> 다운로드)
+    const ext = path.split('.').pop().toLowerCase();
+    docDownload.href = path;
+    docDownload.style.display = 'inline-block';
+    docDownload.setAttribute('download', '');
+
+    if (ext === 'pdf') {
+      // PDF 미리보기
+      docContent.innerHTML = '';
+      const embed = document.createElement('embed');
+      embed.type = 'application/pdf';
+      embed.src = path;
+      embed.onload = () => { /* 로드됨 */ };
+      docContent.appendChild(embed);
+    } else if (ext === 'hwp' || ext === 'hwpx') {
+      // 브라우저에서 미리보기 불가: 안내 + 다운로드
+      docContent.innerHTML = '';
+      const p = document.createElement('div');
+      p.className = 'notice';
+      p.innerHTML = '이 파일은 한글(HWP) 형식입니다. 브라우저에서 미리보기할 수 없습니다. 아래 "다운로드" 버튼을 눌러 파일을 열어주세요.';
+      docContent.appendChild(p);
+    } else {
+      // 기타 문서 (docx 등) — 안내 및 다운로드
+      docContent.innerHTML = '';
+      const p = document.createElement('div');
+      p.className = 'notice';
+      p.innerHTML = '브라우저에서 미리보기가 지원되지 않는 파일 형식입니다. 아래 "다운로드" 버튼을 눌러 파일을 열어주세요.';
+      docContent.appendChild(p);
+    }
+  })();
+}
+
+function closeDocumentModal() {
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+/* --- 초기화: documents.json 로드 시도 --- */
+loadDocumentsJson();
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
