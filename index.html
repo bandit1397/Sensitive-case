@@ -412,8 +412,8 @@ const DEFAULT_CANDIDATES = {
     "경고장.pdf",
     "경고장.hwp",
   ],
-   "가정폭력_피해자_권리_및_지원_안내서": [
-    "가정폭력_피해자_권리_및_지원_안내서.pdf",
+   "가정폭력피해자권리및지원안내서": [
+    "가정폭력피해자권리및지원안내서.pdf",
     "가정폭력피해자권리및지원안내서.hwp",
   ],
   // 필요하면 다른 문서 키에 대한 후보를 여기 추가 가능
@@ -504,9 +504,9 @@ function createSubContentDepth(사건, 항목) {
         } else if (/통합판단조사표/.test(item.text)) {
           docKey = "통합판단조사표";
           title = "통합 판단 조사표";
-        } else if (/가정폭력_피해자_권리_및_지원_안내서/.test(item.text)) {
-          docKey = "가정폭력_피해자_권리_및_지원_안내서";
-          title = "가정폭력 피해자 권리 및 지원 안내서";
+        } else if (/가정폭력피해자권리및지원안내서/.test(item.text)) {
+          docKey = "가정폭력피해자권리및지원_안내서";
+          title = "가정폭력피해자권리및지원안내서";
         }
 
         if (docKey) await openDocumentModal(docKey, title);
@@ -633,6 +633,7 @@ loadDocumentsJson();
 
 </body>
 </html>
+
 
 
 
