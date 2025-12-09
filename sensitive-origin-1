@@ -4,13 +4,79 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>민감사건 체크리스트 완전판</title>
+  
   <style>
-  /* --- 기존 스타일 유지(요청대로 모든 것은 동일) --- */
-  body { font-family: sans-serif; padding: 1rem; background-color: #f7f7f7; }
+   html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    min-height: 100vh;
+    font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: #f5f7fa;
+    color: #222;
+  }
+
+    
   .section { margin-bottom: 2rem; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    
   button { display: block; margin: 0.5rem 0; padding: 0.5rem 1rem; cursor: pointer; }
+    
   .sub-content { margin-left: 1rem; margin-top: 0.5rem; background: #eef; padding: 0.5rem; border-radius: 4px; }
 
+
+
+ /* 로고 화면 스타일 */
+  #logo-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: #000;
+  }
+
+  #logo-screen img {
+    max-width: 90%;
+    max-height: 90%;
+    cursor: pointer;
+    transition: transform 2s ease, opacity 2s ease;
+  }
+
+  /* 로고 사라질 때 애니메이션 */
+  .logo-zoom-out {
+    transform: scale(1.5); /* 확대 */
+    opacity: 0;             /* 사라짐 */
+  }
+
+  /* 매뉴얼 화면 숨김 + 초기 상태는 축소 */
+ #manual-screen {
+  /* display:none 제거 */
+  padding: 1rem;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 1s ease, opacity 1s ease;
+  pointer-events: none; /* 숨겨져 있을 때 클릭 막기 */
+}
+
+#manual-screen.show {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
   ul, li {
     list-style-type: none !important;
     margin: 0;
@@ -91,6 +157,19 @@
 </head>
   
 <body>
+
+
+<!-- 로고 화면 -->
+<div id="logo-screen">
+  <img src="logo.png" alt="수배자 매뉴얼 로고" id="logo-img">
+</div>
+
+<div id="manual-screen">
+
+
+
+
+  
 <h1 style="text-align:center; margin-top:0; padding:1rem 0; font-size:1.8rem;">
     민감사건 체크리스트
 </h1>
@@ -668,30 +747,28 @@ loadDocumentsJson();
   </a>
 </div>
 
+</div>
+
+
+<script>
+  const logoImg = document.getElementById('logo-img');
+  const logoScreen = document.getElementById('logo-screen');
+  const manualScreen = document.getElementById('manual-screen');
+
+  logoImg.addEventListener('click', () => {
+    logoImg.classList.add('logo-zoom-out');
+
+    setTimeout(() => {
+      logoScreen.style.display = 'none';
+    
+      // display는 항상 block, 클래스로 등장 효과 적용
+      manualScreen.classList.add('show');
+    }, 2000);
+  });
+</script>
+
+
+  
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
