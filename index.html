@@ -727,6 +727,11 @@ function 글자크기적용(text, depth) {
   return text;
 }
 
+function applyTextTransforms(text, depth) {
+  // 색상 → 폰트 크기 순서 적용
+  return 글자크기적용(색상변환(text), depth);
+}
+
 
 function closeDocumentModal() {
   modal.classList.remove('open');
@@ -773,6 +778,7 @@ loadDocumentsJson();
   
 </body>
 </html>
+
 
 
 
