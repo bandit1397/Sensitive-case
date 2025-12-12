@@ -730,6 +730,8 @@ function 글자크기적용(text, depth) {
     return `<span style="font-size:0.85em;">${text}</span>`;  // ★ 추가됨
   } else if (depth === 1) {
     return `<span style="font-size:0.8em;">${text}</span>`;
+  } else if (depth === 1.5) {
+    return `<span style="font-size:0.75em;">${text}</span>`;
   }
   return text;
 }
@@ -785,6 +787,7 @@ loadDocumentsJson();
   
 </body>
 </html>
+
 
 
 
