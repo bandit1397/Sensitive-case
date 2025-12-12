@@ -578,7 +578,7 @@ function createSubContentDepth(사건, 항목) {
     if (/사실혼\s*판단\s*체크리스트|사실혼|경고장|피해자권리고지안내서|가정폭력 피해자 권리 및 지원 안내서|스토킹 데이트폭력 피해자 권리지원 안내서|통합판단조사표/.test(item.text)) {
       const a = document.createElement('a');
       a.href = "javascript:void(0)";
-      a.innerHTML = rawHtml;
+      a.innerHTML = applyTextTransforms(item.text, item.depth);
       a.style.textDecoration = 'underline';
       a.style.cursor = 'pointer';
 
@@ -610,7 +610,7 @@ function createSubContentDepth(사건, 항목) {
 
       li.appendChild(a);
     } else {
-      li.innerHTML = rawHtml;
+      li.innerHTML = applyTextTransforms(item.text, item.depth);
     }
 
     ul.appendChild(li);
@@ -778,6 +778,7 @@ loadDocumentsJson();
   
 </body>
 </html>
+
 
 
 
