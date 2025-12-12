@@ -381,6 +381,7 @@ const 세부내용Depth = {
     "현장출동": [
       { text: "□ 제지, 경고 및 분리", depth: 0 },
       { text: "□ ||스토킹 행위||란 상대방의 |의사|(|||x명시적 의사x|||)에 반하여 ||정당한 이유 없이|| 다음 어는 하나의 행위를 행하여<br> 상대방에게 ||불안감|| 또는 ||공포심||을 일으키는 것", depth: 0 },
+      { text: "- 상대방의 |의사|(|||x명시적 의사x|||)에 반하여", depth: 0.5 },
       { text: "- |반의사불벌죄 아님|", depth: 2 },
       { text: "▸ 상대방등에게 ||접근||하거나 ||따라다니||거나 ||진로를 막아||서는 행위", depth: 1 },
       { text: "▸ 상대방등의 |주거등(일상적으로 생활하는 장소) 또는 그 부근|에서 ||기다리||거나 ||지켜보||는 행위", depth: 1 },
@@ -721,6 +722,8 @@ function openDocumentModal(docKey, friendlyName) {
 function 글자크기적용(text, depth) {
   if (depth === 0) {
     return `<span style="font-size:0.9em;">${text}</span>`;
+  } else if (depth === 0.5) {
+    return `<span style="font-size:0.85em;">${text}</span>`;  // ★ 추가됨
   } else if (depth === 1) {
     return `<span style="font-size:0.8em;">${text}</span>`;
   }
@@ -778,6 +781,7 @@ loadDocumentsJson();
   
 </body>
 </html>
+
 
 
 
