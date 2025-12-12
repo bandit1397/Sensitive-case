@@ -23,6 +23,10 @@
     
   .sub-content { margin-left: 1rem; margin-top: 0.5rem; background: #eef; padding: 0.5rem; border-radius: 4px; }
 
+   #feedback-btn {
+     margin: 0.3rem auto;    /* 이 버튼만 중앙 */
+    }
+
 
 
  /* 로고 화면 스타일 */
@@ -440,17 +444,17 @@ const 세부내용Depth = {
 
     "필수서류": [
       { text: "▸||통합판단조사표||", depth: 0 },
-      { text: "▸||스토킹 데이트폭력 피해자 권리지원 안내서||", depth: 0 },
+      { text: "▸<span style='font-size:0.8em;'>||스토킹 데이트폭력 피해자 권리지원 안내서||</span>", depth: 0 },
       { text: "▸||경고장||", depth: 0 },
       { text: "▸||응급조치 보고서||", depth: 0 },
       { text: "▸||긴급응급조치결정서||", depth: 0 },
-      { text: "▸||긴급응급조치 고지서(|||대상자 교부|||)|| 및 ||확인서||", depth: 0 },
-      { text: "▸||긴급응급조치 통지서||(|||피해자 교부|||)", depth: 0 },
-      { text: "▸||체포서|| or ||임의동행보고서|| or ||발생보고서||", depth: 0 }
+      { text: "▸||긴급응급조치 고지서<span style='font-size:0.75em;'>(|||대상자 교부|||)</span>|| 및 ||확인서||", depth: 0 },
+      { text: "▸||긴급응급조치 통지서||<span style='font-size:0.75em;'>(|||피해자 교부|||)</span>", depth: 0 },
+      { text: "▸||체포서|| or ||임동보고서|| or ||발생보고서||", depth: 0 }
     ],
     "유의사항": [
       { text: "□ |수사를 담당하거나 관여한 경찰관|이 ||피해자를 특정하여 파악할 수 있는 정보와 사생활 누설||한 경우", depth: 0 },
-      { text: "▸3년 이하 |징역| 또는 3천만원 이하 |벌금|", depth: 1 },
+      { text: "▸3년 ↓ |징역| 또는 3천만원 ↓ |벌금|", depth: 1 },
     ]
   },
 
@@ -464,7 +468,7 @@ const 세부내용Depth = {
       { text: "▸||사실혼 판단 체크리스트||", depth: 0 },
       { text: "▸||경고장||", depth: 0 },
       { text: "▸||피해자권리고지안내서||", depth: 0 },
-      { text: "▸||체포서|| or ||임의동행보고서|| or ||발생보고서||", depth: 0 }
+      { text: "▸||체포서|| or ||임동보고서|| or ||발생보고서||", depth: 0 }
 
     ],
     "유의사항": [
@@ -725,26 +729,14 @@ loadDocumentsJson();
 
 
 <!-- 여기에 의견 남기기 버튼 삽입 -->
-<div style="margin-top: 1.5rem; text-align: center;">
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSckIGUsdSSDhNwaCH66-hoxq3SU-rK8XZhjyZrLfkwJc6CCmw/viewform?embedded=true" 
-     target="_blank"
-     style="
-       display: inline-block;
-       padding: 0.7rem 1.4rem;
-       background: #4CAF50;
-       color: white;
-       font-size: 1rem;
-       font-weight: bold;
-       border-radius: 6px;
-       text-decoration: none;
-       box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-       transition: 0.2s;
-     "
-     onmouseover="this.style.opacity='0.85'"
-     onmouseout="this.style.opacity='1'"
+<div style="text-align: center;">
+  <button 
+    id="feedback-btn"
+    style="padding:12px 20px; font-size:16px; background:#007bff; color:white; border:none; border-radius:6px; cursor:pointer;"
+    onclick="window.open('https://tally.so/r/EkKL2A', '_blank');"
   >
     오류 & 추가 의견 남기기
-  </a>
+  </button>
 </div>
 
 </div>
@@ -771,4 +763,10 @@ loadDocumentsJson();
   
 </body>
 </html>
+
+
+
+
+
+
 
