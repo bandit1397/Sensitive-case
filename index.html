@@ -718,6 +718,16 @@ function openDocumentModal(docKey, friendlyName) {
   })();
 }
 
+function 글자크기적용(text, depth) {
+  if (depth === 0) {
+    return `<span style="font-size:0.9em;">${text}</span>`;
+  } else if (depth === 1) {
+    return `<span style="font-size:0.8em;">${text}</span>`;
+  }
+  return text;
+}
+
+
 function closeDocumentModal() {
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
@@ -763,6 +773,7 @@ loadDocumentsJson();
   
 </body>
 </html>
+
 
 
 
